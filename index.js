@@ -1,5 +1,7 @@
 const express = require('express');
-const mySql = require('mysql')
+const logger = require("morgan");
+
+const mainRouter = require("./src/routes/index")
 
 const app = express()//fungsi expres ini digunkanan untuk membuat aplikasi express
 
@@ -10,22 +12,23 @@ app.listen(port, () => {
     console.log(`server is running port ${port}`)
 })
 
-// localhost:8000/products
-// endpoint => /products
-// localhost:8000
-// endpoint => /
-app.get('/',(req, res) => {
-    res.send("Selamat Datang")
-});
+//menambahkan logger
+app.use(logger("dev"));
 
-const db = mySql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'beginner'
-})
+//menambahkan parser untuk x-www-form-urlencoded
+app.use(express.urlencoded({extended: false}));
+//extended: false => menggunakan qs
+//extended : true => menggunakan querystring
 
-db.connect((err) => {
-    if(err) throw err;
-    console.log("Database connected")
-})
+
+//menambahkan parser untuk raw json
+app.use(express.json());
+
+
+//modularisasi ke Mainrouter
+app.use("/", mainRouter);
+
+
+module.exports = app;
+
+
