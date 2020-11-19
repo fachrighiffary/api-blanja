@@ -1,10 +1,10 @@
 const mySQL = require('mySQL');
 
-const db = mySql.createConnection({
+const db = mySQL.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'beginner'
+    database: 'blanjaapp'
 })
 
 db.connect((err) => {
