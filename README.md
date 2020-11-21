@@ -28,5 +28,5 @@ localhost:8000/product/:{id}
 ~~~
 endpoint untk update data
 dengan method put
-localhost:8000/product/{id}
+localhost:8000/product
 ~~~
