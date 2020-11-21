@@ -1,19 +1,19 @@
 const express = require("express")
 
+const db = require("../configs/mySQL")
+
 const productsModel = require("../models/products")
-
-const db = require("../configs/mySQL");
-
+const form = require("../helpers/form")
 
 module.exports = {
-    getAllProducts : ("/", (req,res) => {
+    getAllProducts : ("/", (_,res) => {
         productsModel
         .getAllProducts()
         .then((data) => {
-            res.json(data);
+            form.success(res,data)
         })
         .catch((err) => {
-            res.json(err)
+           form.error(res,err)
         })
-        })
+    })
 }
