@@ -36,37 +36,4 @@ module.exports = {
           form.error(res.err);
       })
   },
-    sortNameProduct : (_, res) => {
-      
-      searchModel
-        .sortNameProduct()
-        .then((data) => {
-          res.json(data);
-        })
-        .catch((err) => {
-          res.json(err);
-        });
-    },
-
-    sortNewProduct : (_, res) => {
-      searchModel
-      .getAllNewProducts()
-        .then((data) => {
-          res.json(data);
-        })
-        .catch((err) => {
-          res.json(err);
-        });
-    },
-
-    sortPriceProduct : (_, res) => {
-      searchModel
-      .getAllPriceProduct()
-        .then((data) => {
-          res.json(data);
-        })
-        .catch((err) => {
-          res.json(err);
-        });
-    }
 };
