@@ -7,6 +7,10 @@ module.exports = {
         res.json(resObject)
     },
     error: (res, err) => {
-        res.status(500).json(err)
+        const  error = {
+            msg : 'Data Tidak Ditemukan',
+            err
+        }
+        res.status(500).json(error)
     }
 }

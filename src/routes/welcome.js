@@ -8,7 +8,7 @@ const welcomeRouter = express.Router();
 
 //membuat handler untuk endpoint
 welcomeRouter.get("/", (req, res) => {
-    res.send("Hellow World")
+    res.send("Hellow Fachri Selamat Belajar Node.js, Semangat!!")
 });
 
 module.exports  = welcomeRouter;
