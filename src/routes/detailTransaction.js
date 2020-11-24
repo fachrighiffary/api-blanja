@@ -29,7 +29,11 @@ detailTransaction.post("/", (req,res) => {
         res.json(resObject)
     })
     .catch((err) => {
-        res.json(err)
+        const error = ({
+            msg : 'transaksi gagal',
+            err
+        })
+        res.json(error)
     })
 })
 
@@ -49,7 +53,11 @@ detailTransaction.get("/history", (req, res) => {
         res.json(data)
     })
     .catch((err) => {
-        res.json(err)
+        const error = ({
+            msg :'belum ada transaksi',
+            err
+        })
+        res.json(error)
     })
 })
 module.exports = detailTransaction;
