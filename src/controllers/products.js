@@ -13,6 +13,18 @@ module.exports = {
         })
     },
 
+    getPopularProducts : (req,res) => {
+        productsModel
+        .getPopularProducts()
+        .then((data) => {
+            form.success(res,data)
+        })
+        .catch((err) => {
+            form.error(res,err)
+        })
+    },
+
+
     createProducts : (req, res) => {
         const { body } = req;
         const insertBody = {

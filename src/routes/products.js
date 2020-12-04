@@ -1,5 +1,4 @@
 const express = require("express");
-const db = require("../configs/mySQL");
 
 const productsRouter = express.Router();
 
@@ -9,6 +8,7 @@ const productsController = require("../controllers/products");
 
 //localhost:8000/products
 productsRouter.get("/", productsController.getAllProducts);
+productsRouter.get("/popular", productsController.getPopularProducts);
 
 //localhost:8000/products => method post
 productsRouter.post("/", productsController.createProducts);

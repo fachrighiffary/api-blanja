@@ -1,9 +1,5 @@
-const express = require("express")
-
-const db = require("../configs/mySQL")
-
 const productModel = require("../models/product")
-
+const form = require("../helpers/form")
 
 module.exports = {
     getProductByid : (req, res) => {
@@ -12,21 +8,22 @@ module.exports = {
         .getProductByid(req)
         .then((data) => {
             if(data.length){
-                res.json(data[0])
+               form.success(res,data)
             }res.status(404).json({
                 msg: "Data not found"
             })
         })
         .catch((err) => {
-            console.log(json(err))
-        })
+            form.error(res,err)
+         })
     },
     deleteProduct : (req, res) => {
         productModel
-        .deleteData(req)
+        .deleteProduct(req)
         .then((data) => {
             res.json({
-                msg: 'Deleted Successfully'
+                msg: 'Deleted Successfully',
+                data 
             })
         })
         .catch((err) => {

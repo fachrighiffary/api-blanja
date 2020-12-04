@@ -1,5 +1,4 @@
 const express = require("express")
-const db = require("../configs/mySQL")
 
 const transactionRouter = express.Router();
 
