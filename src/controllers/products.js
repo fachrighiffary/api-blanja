@@ -2,9 +2,9 @@ const productsModel = require("../models/products")
 const form = require("../helpers/form")
 
 module.exports = {
-    getAllProducts : (_,res) => {
+    getAllProducts : (req,res) => {
         productsModel
-        .getAllProducts()
+        .getAllProducts(req)
         .then((data) => {
             form.success(res,data)
         })
@@ -24,16 +24,27 @@ module.exports = {
         })
     },
 
-
     createProducts : (req, res) => {
         const { body } = req;
+        const multipleImg = req.files.map(({filename}) => {
+            return "/images/" + filename
+       })
+       const imgMultiple = multipleImg.toString()
+       console.log(imgMultiple.split(','))
         const insertBody = {
             ...body,
+            product_img : imgMultiple,
             input_date: new Date(Date.now()),
             update_date: new Date(Date.now()),
         };
+        const level = req.decodedToken.level;
+
+        
+    //    console.log(product_img)
+       
+        
         productsModel
-        .createProducts(insertBody)
+        .createProducts(insertBody, level)
         .then((data) => {
             const resObject ={
                 msg: "Input Successfully",

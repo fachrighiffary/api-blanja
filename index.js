@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 const logger = require("morgan");
 const cors = require("cors");
@@ -9,6 +10,7 @@ const app = express()//fungsi expres ini digunkanan untuk membuat aplikasi expre
 //test apakah expressnya jalan atau tidak
 const port = 8000;
 
+app.use(express.static("public"))
 
 app.use(cors());
 app.listen(port, () => {

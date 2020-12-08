@@ -3,7 +3,6 @@ const form = require("../helpers/form")
 
 module.exports = {
     getProductByid : (req, res) => {
-
         productModel
         .getProductByid(req)
         .then((data) => {
@@ -18,8 +17,12 @@ module.exports = {
          })
     },
     deleteProduct : (req, res) => {
+        const {id} =  req
+        const idBody = {id};
+        const level =  req.decodedToken.level
+        // console.log(`level dari orang yang delete ${level}`)
         productModel
-        .deleteProduct(req)
+        .deleteProduct(idBody, level)
         .then((data) => {
             res.json({
                 msg: 'Deleted Successfully',
@@ -27,24 +30,31 @@ module.exports = {
             })
         })
         .catch((err) => {
-            res.json({
-                msg : 'Delete Failed',
-            })
-            res.json(err)
-           
-        })
+            const error = {
+                msg: "Deleted Failed",
+                err 
+            }
+            res.json(error);
+        });
     },
     updateProduct : (req, res) => {
         const { id } = req.body
         const { body } = req
+        const multipleImg = req.files.map(({filename}) => {
+            return "/images/" + filename
+        })
+        const imgMultiple = multipleImg.toString()
+
         const updateBody = {
            ...body,
-            update_date: new Date(Date.now()),
+           product_img : imgMultiple,
+           update_date: new Date(Date.now()),
         };
         const idBody = {id};
+        const level = req.decodedToken.level
         
         productModel
-        .updateProduct(updateBody,idBody)
+        .updateProduct(updateBody,idBody, level)
         .then((data) => {
             const resObject ={
                 msg: "Update Successfully",

@@ -5,6 +5,7 @@ module.exports = {
         const {id} = req.params;
         return new Promise((resolve, reject) => {
             const qs = "SELECT p.id, p.category_id, p.product_name,c.category_name,p.product_rating, p.product_color,p.product_condition, s.store_name,p.product_price,p.product_qty,p.product_size,p.product_desc FROM products AS p JOIN category AS c ON c.id = p.category_id JOIN store AS s ON s.id = p.store_id WHERE p.id = ?"
+            
             db.query(qs, id, (err, data) => {
                 if(!err) {
                     resolve(data);
@@ -14,11 +15,17 @@ module.exports = {
             });
         });
     },
-    deleteProduct : (req) => {
-        const {id} = req.params;
+    deleteProduct : (idBody, level) => {
         return new Promise((resolve, reject) => {
             const qs ="DELETE FROM `products` WHERE id = ?"
-            db.query(qs, id, (err, data) => {
+            if(level > 1 ){
+                reject({
+                    msg : 'You are not seller, so you cant delete this product',
+                    status : 401
+                })
+            } 
+            //console.log(`user delete ${level}`)         
+            db.query(qs, idBody, (err, data) => {
                 if(!err){
                     resolve(data);
                 }else{
@@ -27,9 +34,16 @@ module.exports = {
             })
         })
     }, 
-    updateProduct : (updateBody,idBody) => {
+    updateProduct : (updateBody,idBody, level) => {
         return new Promise((resolve, reject) => {
             const qs = "UPDATE products SET ? WHERE  ?"
+            if(level > 1){
+                reject({
+                    msg : 'selain seler tidak bisa update data',
+                    status: 401
+
+                })
+            }
             db.query(qs,[updateBody, idBody], (err, data) => {
                 console.log(updateBody)
                 if(!err) {

@@ -3,7 +3,7 @@ const form = require("../helpers/form")
 
 
 module.exports = {
-    searchNameProduct: (req, res) => {
+      searchProduct: (req, res) => {
       const { q } = req.query;
       const keyword = "%" + q + "%";
       searchModel
@@ -33,7 +33,7 @@ module.exports = {
           form.success(res, data);
       })
       .catch((err) => {
-          form.error(res.err);
+          form.error(res,err);
       })
   },
 };
