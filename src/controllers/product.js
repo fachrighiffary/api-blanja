@@ -40,14 +40,13 @@ module.exports = {
     updateProduct : (req, res) => {
         const { id } = req.body
         const { body } = req
-        const multipleImg = req.files.map(({filename}) => {
-            return "/images/" + filename
-        })
-        const imgMultiple = multipleImg.toString()
+        const multipleImg = JSON.stringify(
+            req.files.map((e) => "/images" + "/" + e.filename + " ")
+        )
 
         const updateBody = {
            ...body,
-           product_img : imgMultiple,
+           product_img : multipleImg,
            update_date: new Date(Date.now()),
         };
         const idBody = {id};

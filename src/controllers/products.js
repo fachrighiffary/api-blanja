@@ -26,38 +26,39 @@ module.exports = {
 
     createProducts : (req, res) => {
         const { body } = req;
-        const multipleImg = req.files.map(({filename}) => {
-            return "/images/" + filename
-       })
-       const imgMultiple = multipleImg.toString()
-       console.log(imgMultiple.split(','))
+        
+        const multipleImg = JSON.stringify(
+            req.files.map((e) => "/images" + "/" + e.filename + " ")
+        )
+        const level = req.decodedToken.level;
         const insertBody = {
             ...body,
-            product_img : imgMultiple,
+            product_img : multipleImg,
             input_date: new Date(Date.now()),
             update_date: new Date(Date.now()),
         };
-        const level = req.decodedToken.level;
-
+       
         
     //    console.log(product_img)
        
         
         productsModel
-        .createProducts(insertBody, level)
+        .createProducts(insertBody, level, multipleImg)
         .then((data) => {
             const resObject ={
                 msg: "Input Successfully",
                 data: {id: data.insertId, ...insertBody},
             };
-            res.json(resObject);
+            form.success(res, resObject)
+            // res.json(resObject);
         })
         .catch((err) => {
             const errMsg = ({
                 msg : "Input Failed",
                 err
             })
-            res.json(errMsg);
+            form.error(res,errMsg)
+            // res.json(errMsg);
         });
     }
 }

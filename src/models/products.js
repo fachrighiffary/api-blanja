@@ -39,7 +39,7 @@ module.exports = {
                     pageinfo : {
                         currentPage : page,
                         previus     :  page === 1? null : `/products?page=${page- 1}&limit=${limit}`,
-                        nextPage    :  `/products?page=${page+ 1}&limit=${limit}`,
+                        nextPage    : limit !== data.length ? null : `/products?page=${page+ 1}&limit=${limit}`,
                     }
                 }
                 if(!err){
@@ -51,7 +51,7 @@ module.exports = {
         });
     },
 
-    createProducts : (insertBody, level) => {
+    createProducts : (insertBody, level, multipleImg) => {
         return new Promise((resolve, reject) => {
             const  qs = "INSERT INTO products SET ?";
             if(level > 1){
@@ -60,7 +60,7 @@ module.exports = {
                     status : 401
                 }) 
             }
-            db.query(qs, [insertBody, level], (err, data) => {
+            db.query(qs, [insertBody, level, multipleImg], (err, data) => {
                 if(!err){
                     resolve(data);
                 } else{
