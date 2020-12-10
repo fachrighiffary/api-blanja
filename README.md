@@ -44,7 +44,7 @@ const db = mySQL.createConnection({
 
 ## Documentasi Postman
 
-### Register
+## Register
 
 endpoint 
 ~~~
@@ -71,7 +71,7 @@ response
 }
 ~~~
 
-### Login
+## Login
 
 endpoint
 ~~~
@@ -93,7 +93,7 @@ response
 ~~~
 
 
-Create Product
+## Create Product
 
 endpoint 
 ~~~
@@ -130,7 +130,7 @@ response
 }
 ~~~
 
-Get product By id
+## Get product By id
 
 ~~~
 endpoint
@@ -174,7 +174,7 @@ success
 }
 ~~~
 
-Update Product
+## Update Product
 
 endpoint 
 ~~~
