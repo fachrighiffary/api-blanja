@@ -51,7 +51,7 @@ module.exports = {
         });
     },
 
-    createProducts : (insertBody, level, multipleImg) => {
+    createProducts : (insertBody, level) => {
         return new Promise((resolve, reject) => {
             const  qs = "INSERT INTO products SET ?";
             if(level > 1){
@@ -60,7 +60,7 @@ module.exports = {
                     status : 401
                 }) 
             }
-            db.query(qs, [insertBody, level, multipleImg], (err, data) => {
+            db.query(qs, [insertBody, level], (err, data) => {
                 if(!err){
                     resolve(data);
                 } else{
