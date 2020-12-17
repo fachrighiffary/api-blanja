@@ -10,10 +10,10 @@ const multipleUpload = require("../helpers/middleware/upload");
 
 
 
-productRouter.get("/:id",checkToken, productController.getProductByid);
-productRouter.delete("/:id",checkToken, productController.deleteProduct);
-productRouter.put("",checkToken, multipleUpload, productController.updateProduct);
-
+productRouter.get("/:id", checkToken.login, productController.getProductByid);
+productRouter.delete("/:id",checkToken.login,  checkToken.seller,  productController.deleteProduct);
+productRouter.put("",checkToken.login,  checkToken.seller,  multipleUpload, productController.updateProduct);
+productRouter.patch("/:id", checkToken.login,  checkToken.seller,  multipleUpload, productController.updateProd);
 //productRouter.get("/:id", )
 
 

@@ -4,7 +4,7 @@ module.exports = {
     getProductByid : (req) => {
         const {id} = req.params;
         return new Promise((resolve, reject) => {
-            const qs = "SELECT p.id, p.category_id, p.product_name,c.category_name,p.product_rating, p.product_color,p.product_condition, s.store_name,p.product_price,p.product_qty,p.product_size,p.product_desc, p.product_img FROM products AS p JOIN category AS c ON c.id = p.category_id JOIN store AS s ON s.id = p.store_id WHERE p.id = ?"
+            const qs = "SELECT a.product_img, a.category_id, a.product_name, a.store_name, a.product_price, a.product_size, a.product_color, a.product_condition, a.product_qty, a.product_desc, SUM(a.rtg / a.jml) AS total_rating FROM (SELECT p.id, p.category_id, u.store_name, p.product_name, c.category_name, p.product_color, p.product_condition, p.product_price, p.product_qty, p.product_size, p.product_desc, p.product_img, SUM(r.rating) as rtg, COUNT(r.product_id) as jml FROM products AS p JOIN category AS c ON c.id = p.category_id JOIN users as u ON u.id = p.user_id JOIN rating as r ON r.product_id = p.id WHERE p.id = ? GROUP BY p.id) as a GROUP BY a.id"
             
             db.query(qs, id, (err, data) => {
                 if(!err) {
@@ -15,15 +15,9 @@ module.exports = {
             });
         });
     },
-    deleteProduct : (idBody, level) => {
+    deleteProduct : (idBody) => {
         return new Promise((resolve, reject) => {
             const qs ="DELETE FROM `products` WHERE id = ?"
-            if(level > 1 ){
-                reject({
-                    msg : 'You are not seller, so you cant delete this product',
-                    status : 401
-                })
-            } 
             //console.log(`user delete ${level}`)         
             db.query(qs, idBody, (err, data) => {
                 if(!err){
@@ -34,7 +28,7 @@ module.exports = {
             })
         })
     }, 
-    updateProduct : (updateBody,idBody, level) => {
+    updateProduct : (updateBody,id, level) => {
         return new Promise((resolve, reject) => {
             const qs = "UPDATE products SET ? WHERE  ?"
             if(level > 1){
@@ -44,7 +38,7 @@ module.exports = {
 
                 })
             }
-            db.query(qs,[updateBody, idBody], (err, data) => {
+            db.query(qs,[updateBody, id], (err, data) => {
                 console.log(updateBody)
                 if(!err) {
                     resolve(data);
@@ -53,5 +47,35 @@ module.exports = {
                 }
             });
         });
-    }
+    },
+    deleteFile: (id) => {
+        return new Promise ((resolve, reject ) => {
+            const queryStr = "SELECT product_img FROM products WHERE id = ?"
+            db.query(queryStr, id, (err, data) => {
+                if(!err) {
+                    resolve(data)
+                }else{
+                    reject({
+                        msg: `Gagal`
+                    })
+                }
+            })
+        })
+    },
+    updateProd: (body, id) => {
+        console.log(body, id)
+        return new Promise ((resolve, reject) => {
+            const queryStr = 'UPDATE products SET ? WHERE id = ? '
+            db.query(queryStr, [body, id], (err) => {
+                if(!err){
+                    resolve({
+                        msg : `berhasil pada id ${id}`
+                    })
+                }else{
+                    reject(err)
+                }
+            })
+        })
+    },
+    
 }

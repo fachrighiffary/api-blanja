@@ -27,13 +27,16 @@ module.exports = {
     createProducts : (req, res) => {
         const { body } = req;
         
-        const multipleImg = JSON.stringify(
-            req.files.map((e) => "/images" + "/" + e.filename + " ")
-        )
-        const level = req.decodedToken.level;
+        // const multipleImg = JSON.stringify(
+        //     req.files.map((e) => "/images" + "/" + e.filename + " ")
+        // )
+
+        const multipleImage = req.filePath
+
+        console.log(req.filePath)
         const insertBody = {
             ...body,
-            product_img : multipleImg,
+            product_img : multipleImage,
             input_date: new Date(Date.now()),
             update_date: new Date(Date.now()),
         };
@@ -43,11 +46,11 @@ module.exports = {
        
         
         productsModel
-        .createProducts(insertBody, level, multipleImg)
-        .then((data) => {
+        .createProducts(insertBody)
+        .then(() => {
             const resObject ={
                 msg: "Input Successfully",
-                data: {id: data.insertId, ...insertBody},
+                data: {...insertBody, product_img:req.filePath.split(',')},
             };
             form.success(res, resObject)
             // res.json(resObject);

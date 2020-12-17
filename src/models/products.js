@@ -4,24 +4,25 @@ module.exports = {
     getAllProducts : (req) => {
         return new Promise((resolve, reject) => {
             const {query} = req;
-            const limit = Number(query.limit) || 5;
+            const limit = Number(query.limit) || 15;
             //limit : 5
             //page : 1 2 3
             //offset : 0 5 10
             // rumus offset : (page - 1) * limit
             const page = Number(query.page) || 1;
             const offset = (Number(query.page) - 1) * limit || 0; 
-
-            let qs = `SELECT p.id, p.product_name,p.product_rating, p.product_condition,s.store_name, p.product_price, p.product_qty,c.category_name,p.product_size, p.product_desc, p.product_size, p.input_date, p.update_date FROM products AS p JOIN category AS c ON c.id = p.category_id JOIN store AS s ON s.id = p.store_id`
+ 
+            let qs = `SELECT a.id, a.product_name, a.product_price, a.product_qty, a.store_name, a.product_img, sum(a.rtg / a.jml ) AS total_rating, a.input_date FROM (SELECT p.id, p.product_name, p.product_price, p.product_qty, p.product_img, SUM(r.rating) as rtg, COUNT(r.rating) as jml, u.store_name ,p.input_date FROM products AS p JOIN rating AS r ON p.id = r.product_id JOIN users as u ON p.user_id = u.id GROUP BY p.id) as a
+            GROUP BY a.id`
             if(req.query.new != null){
-                qs += " ORDER BY p.input_date"
+                qs += " ORDER BY a.input_date"
                 if(req.query.new === 'desc'){
                     qs += " DESC"
                 }else{
                     qs += " ASC"
                 }
             }else if(req.query.popular != null){
-                qs += " ORDER BY p.product_rating"
+                qs += " ORDER BY total_rating"
                     if(req.query.popular == 'desc'){
                         qs += " DESC"
                     }else{
@@ -51,16 +52,10 @@ module.exports = {
         });
     },
 
-    createProducts : (insertBody, level) => {
+    createProducts : (insertBody) => {
         return new Promise((resolve, reject) => {
             const  qs = "INSERT INTO products SET ?";
-            if(level > 1){
-                reject({
-                    msg : "Anda bukan seller",
-                    status : 401
-                }) 
-            }
-            db.query(qs, [insertBody, level], (err, data) => {
+            db.query(qs, insertBody, (err, data) => {
                 if(!err){
                     resolve(data);
                 } else{

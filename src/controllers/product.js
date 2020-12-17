@@ -1,16 +1,21 @@
 const productModel = require("../models/product")
 const form = require("../helpers/form")
+const fs = require('fs')
 
 module.exports = {
     getProductByid : (req, res) => {
         productModel
         .getProductByid(req)
         .then((data) => {
-            if(data.length){
-               form.success(res,data)
-            }res.status(404).json({
-                msg: "Data not found"
-            })
+            if (data.length) {
+                res.json({
+                  data,
+                });
+              } else {
+                res.status(404).json({
+                  msg: "Data not Found",
+                });
+              }
         })
         .catch((err) => {
             form.error(res,err)
@@ -19,10 +24,9 @@ module.exports = {
     deleteProduct : (req, res) => {
         const {id} =  req
         const idBody = {id};
-        const level =  req.decodedToken.level
         // console.log(`level dari orang yang delete ${level}`)
         productModel
-        .deleteProduct(idBody, level)
+        .deleteProduct(idBody)
         .then((data) => {
             res.json({
                 msg: 'Deleted Successfully',
@@ -38,22 +42,18 @@ module.exports = {
         });
     },
     updateProduct : (req, res) => {
-        const { id } = req.body
+        const { id } = req.params
         const { body } = req
-        const multipleImg = JSON.stringify(
-            req.files.map((e) => "/images" + "/" + e.filename + " ")
-        )
+        const multipleImage = req.filePath
 
         const updateBody = {
            ...body,
-           product_img : multipleImg,
+           product_img : multipleImage,
            update_date: new Date(Date.now()),
         };
         const idBody = {id};
-        const level = req.decodedToken.level
-        
         productModel
-        .updateProduct(updateBody,idBody, level)
+        .updateProduct(updateBody,idBody)
         .then((data) => {
             const resObject ={
                 msg: "Update Successfully",
@@ -68,6 +68,49 @@ module.exports = {
             }
             res.json(error);
         });
+    },
+    updateProd : (req, res) => {
+        const {id} = req.params;
+        let {body} = req;
+        if(req.filepath != ''){
+            body = {
+                ...body,
+                product_img : req.filePath
+            }
+            productModel
+            .deleteFile(id)
+            .then((result) => {
+                if(result[0]){
+                    result[0].product_img.split(",").map((image) => 
+                        fs.unlink(`public${image}`, (err) => {
+                            if(err){
+                                console.log(err)
+                                return
+                            }else {
+                                console.log(`public${image} deleted`)
+                            }
+                        })
+                    )
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+        productModel
+        .updateProd(body, id)
+        .then((data) => {
+            const updated = {
+                ...body,
+                product_img : req.filePath.split(",")
+            }
+            res.status(200).json({data, updated})
+        })
+        .catch((error) => {
+            res.status(500).json(error)
+        })
     }
+
+
 
 }

@@ -5,7 +5,7 @@ const searchController = require("../controllers/search");
 
 
 searchRouter.get("/", searchController.searchProduct);
-searchRouter.get("/category", searchController.searchCategoryProduct);
+searchRouter.get("/sort", searchController.searchBy)
 
 
 module.exports = searchRouter

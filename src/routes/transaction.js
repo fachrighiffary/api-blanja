@@ -6,7 +6,7 @@ const transactionController = require("../controllers/transaction");
 const checkToken = require("../helpers/middleware/checkToken");
 
 
-transactionRouter.post("/",checkToken, transactionController.postTransaction);
+transactionRouter.post("/",checkToken.login, transactionController.postTransaction);
 
 
 

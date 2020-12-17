@@ -10,10 +10,9 @@ const multipleUpload = require("../helpers/middleware/upload");
 
 //localhost:8000/products
 productsRouter.get("/", productsController.getAllProducts);
-productsRouter.get("/popular", productsController.getPopularProducts);
 
 //localhost:8000/products => method post
-productsRouter.post("/",checkToken,multipleUpload, productsController.createProducts);
+productsRouter.post("/",checkToken.login,  checkToken.seller, multipleUpload, productsController.createProducts);
 
 
 

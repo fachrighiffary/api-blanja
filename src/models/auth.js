@@ -23,7 +23,9 @@ module.exports = {
                         if(!err) {
                             resolve(data)
                         }else{
-                            reject(err)
+                            reject({
+                                msg : 'Email Sudah terdaftar, Gunakan Email lain',
+                            })
                         }
                     })
                 })
@@ -38,9 +40,9 @@ module.exports = {
         // verify digunakan untuk verifikasi token di header
         
         return new Promise ((resolve, reject) => {
-            const {username, password} = body
-            const qs = "SELECT password, level_id FROM users WHERE username=?"
-            db.query(qs, username, (err, data) => {
+            const {email, password} = body
+            const qs = "SELECT password, id, username, level_id FROM users WHERE email=?"
+            db.query(qs, email, (err, data) => {
                 if(err) {
                     reject({
                         msg: "Error SQL",
@@ -70,18 +72,53 @@ module.exports = {
                             })
                         }else {
                             const payload = {
-                                username,
-                                level : data[0].level_id
+                                email,
+                                level : data[0].level_id,
                             }
                             const secret = process.env.SECRET_KEY;
                             const token = jwt.sign(payload, secret)
-                            resolve(token);
+                            resolve({
+                                id          : data[0].id,
+                                username    : data[0].username,
+                                level       :data[0].level_id,
+                                token
+                            });
                         }
                     })
                 }
             })
         })
         
+    },
+    logout : (blacklistToken) => {
+        return new Promise((resolve, reject) => {
+            const qs = "INSERT INTO blacklist_token SET ?";
+            db.query(qs, blacklistToken, (err) => {
+                if(!err){
+                    resolve({
+                        msg: "Logout Berhasil"
+                    })
+                }else{
+                    reject({
+                        msg:'Logout Gagal'
+                    })
+                }
+            })
+        })
+    },
+    getUser: (req) => {
+        const {id} = req.params
+        return new Promise((resolve, reject) => {
+            const qs = 'SELECT a.id, a.username, a.email, a.phone_number, a.store_name, a.store_desc, a.photo, b.level FROM users AS a JOIN levels as b ON a.level_id = b.id WHERE a.id = ?'
+
+            db.query(qs, id, (err, data) => {
+                if (!err){
+                    resolve(data)
+                }else{
+                    reject(err)
+                }
+            })
+        })
     }
 
 
