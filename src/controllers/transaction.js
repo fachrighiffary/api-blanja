@@ -21,5 +21,23 @@ module.exports = {
         .catch((err) => {
             res.json(err)
         })
-    }
+    },
+    getTransaction : (req, res) => {
+        transactionModel
+        .getTransaction(req)
+        .then((data) => {
+            if (data.length) {
+                res.json({
+                  data,
+                });
+              } else {
+                res.status(404).json({
+                  msg: "Data not Found",
+                });
+              }
+        })
+        .catch((err) => {
+            form.error(res,err)
+         })
+    },
 }
