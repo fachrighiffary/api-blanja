@@ -26,6 +26,8 @@ module.exports = {
 
     createProducts : (req, res) => {
         const { body } = req;
+
+        
         
         // const multipleImg = JSON.stringify(
         //     req.files.map((e) => "/images" + "/" + e.filename + " ")
@@ -44,7 +46,8 @@ module.exports = {
         
     //    console.log(product_img)
        
-        
+        console.log(insertBody)
+        console.log('ini post product')
         productsModel
         .createProducts(insertBody)
         .then(() => {
@@ -63,6 +66,24 @@ module.exports = {
             form.error(res,errMsg)
             // res.json(errMsg);
         });
+    },
+    getProductByUser : (req, res) => {
+        productsModel
+        .getProductByUser(req)
+        .then((data) => {
+            if (data.length) {
+                res.json({
+                  data,
+                });
+              } else {
+                res.status(404).json({
+                  msg: "Data not Found",
+                });
+              }
+        })
+        .catch((err) => {
+            form.error(res,err)
+         })
     }
 }
 

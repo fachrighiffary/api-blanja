@@ -4,6 +4,7 @@ const form = require("../form")
 
 module.exports = {
     login : (req, res, next) => {
+        console.log('ini login')
         const bearerToken = req.header("x-access-token");
         if(!bearerToken) {
             form.error(res, {
@@ -52,6 +53,7 @@ module.exports = {
         }
     },
     seller: (req, res, next) => {
+        console.log('ini seller')
         const level  = req.decodedToken;
         if (level === 1) {
           form.error(res, {

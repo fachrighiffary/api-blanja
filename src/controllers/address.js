@@ -1,4 +1,3 @@
-const { format } = require("../configs/mySQL");
 const form = require("../helpers/form")
 const addressModel = require("../models/address")
 
@@ -37,7 +36,7 @@ module.exports = {
                    data,
                })
            }else{
-               res.status(40).json({
+               res.status(400).json({
                    msg: "Data Not Found"
                })
            }
@@ -45,6 +44,25 @@ module.exports = {
        .catch((err) => {
            form.error(res, err)
        })
+    },
+    getAddressById : (req, res) => {
+        const {id} = req.params;
+        // console.log(id)
+        // const {user_id} = req.body
+        //console.log(user_id)
+        addressModel
+        .getAddressById(id)
+        .then((data) => {
+            if(data.length){
+                res.json({
+                    data,
+                })
+            }else{
+                res.status(400).json({
+                    msg: "Data Not Found"
+                })
+            }
+        })
     },
     deleteAddress : (req, res) => {
         const {id} =  req.params

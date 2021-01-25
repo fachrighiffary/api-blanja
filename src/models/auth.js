@@ -40,9 +40,10 @@ module.exports = {
         // verify digunakan untuk verifikasi token di header
         
         return new Promise ((resolve, reject) => {
-            const {email, password} = body
-            const qs = "SELECT password, id, username, level_id FROM users WHERE email=?"
-            db.query(qs, email, (err, data) => {
+            const {email, password, level_id} = body
+            const qs = "SELECT password, id, email , username, store_name, level_id FROM users WHERE email=? AND level_id=?"
+
+            db.query(qs, [email, level_id], (err, data) => {
                 if(err) {
                     reject({
                         msg: "Error SQL",
@@ -79,8 +80,10 @@ module.exports = {
                             const token = jwt.sign(payload, secret)
                             resolve({
                                 id          : data[0].id,
+                                email       : data[0].email,
                                 username    : data[0].username,
-                                level       :data[0].level_id,
+                                level       : data[0].level_id,
+                                store_name  : data[0].store_name, 
                                 token
                             });
                         }

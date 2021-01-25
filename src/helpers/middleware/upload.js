@@ -36,6 +36,7 @@ const singleUpload = (req, res, next) => {
 }
 
 const multipleUpload = (req, res, next) => {
+  console.log('multiple upload')
   const uploadMultiple = upload.array('product_img', 5)
   uploadMultiple(req, res, (err) => {
     if(err) {

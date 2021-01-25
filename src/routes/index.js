@@ -11,6 +11,7 @@ const authRouter = require("./auth")
 const imageUploadRouter = require("./imageUpload")
 const userRouter = require("./user");
 const addressRouter = require('./address')
+const RatingRouter = require('./rating')
 //const checkToken = require("../helpers/middleware/checkToken")
 
 
@@ -22,6 +23,8 @@ mainRouter.use("/auth", authRouter); //localhost:8000/auth
 mainRouter.use("/upload", imageUploadRouter); //localhost:8000/auth
 mainRouter.use("/user", userRouter); //localhost:8000/user
 mainRouter.use("/address",addressRouter);//localhost:8000/address
+mainRouter.use("/rating", RatingRouter);//localhost:8000/rating
+
 
 
 

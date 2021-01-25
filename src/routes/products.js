@@ -14,6 +14,8 @@ productsRouter.get("/", productsController.getAllProducts);
 //localhost:8000/products => method post
 productsRouter.post("/",checkToken.login,  checkToken.seller, multipleUpload, productsController.createProducts);
 
+productsRouter.get("/:id", checkToken.login, productsController.getProductByUser);
+
 
 
 

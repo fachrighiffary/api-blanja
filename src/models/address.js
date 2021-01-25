@@ -16,9 +16,21 @@ module.exports = {
     getAllAddress : (req) => {
         const {id} = req.params
         return new Promise((resolve, reject) => {
-            const qs = "SELECT name, address, address_dtl, city, post_code, phone_number FROM `address` WHERE user_id = ?";
+            const qs = "SELECT id, name, address, address_dtl, city, post_code, phone_number FROM `address` WHERE user_id = ?";
             db.query(qs, id, (err, data) => {
                 if(!err) {
+                    resolve(data)
+                }else{
+                    reject(err)
+                }
+            })
+        })
+    },
+    getAddressById : (id) => {
+        return new Promise((resolve, reject) => {
+            const qs = "SELECT id, address, name, address_dtl, city,post_code, phone_number FROM address WHERE id = ? ";
+            db.query(qs, id, (err, data) => {
+                if(!err){
                     resolve(data)
                 }else{
                     reject(err)

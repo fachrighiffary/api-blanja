@@ -22,11 +22,8 @@ module.exports = {
          })
     },
     deleteProduct : (req, res) => {
-        const {id} =  req
-        const idBody = {id};
-        // console.log(`level dari orang yang delete ${level}`)
         productModel
-        .deleteProduct(idBody)
+        .deleteProduct(req)
         .then((data) => {
             res.json({
                 msg: 'Deleted Successfully',
