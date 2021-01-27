@@ -9,7 +9,8 @@ const checkToken = require("../helpers/middleware/checkToken");
 transactionRouter.post("/", transactionController.postTransaction);
 transactionRouter.post("/itemOrder", transactionController.postMultiple)
 
-transactionRouter.get("/:id",checkToken.login, transactionController.getTransaction);
+transactionRouter.get("/:id",transactionController.getTransaction);
+transactionRouter.get("/detail/:id",transactionController.getDetailTransaction);
 
 
 

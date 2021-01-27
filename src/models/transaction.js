@@ -50,7 +50,22 @@ module.exports = {
     getTransaction : (req) => {
         const {id} = req.params;
         return new Promise((resolve, reject) => {
-            const qs = "SELECT t.user_id, p.product_name, t.size, t.color, t.quantity, t.price, t.status,  t.product_img FROM transactions AS t JOIN products as p ON p.id = t.product_id WHERE t.user_id = ?"
+            const qs = "SELECT * FROM tb_transaksi WHERE user_id = ?"
+            
+            db.query(qs, id, (err, data) => {
+                if(!err) {
+                    resolve(data);
+                }else{
+                    reject(err);
+                }
+            });
+        });
+    },
+    getDetailTransaction : (req) => {
+        const {id} = req.params;
+        console.log(typeof id)
+        return new Promise((resolve, reject) => {
+            const qs = "SELECT  p.product_name, t.product_id, t.color, t.size, t.price, t.product_img, a.address_dtl FROM tb_item_order as t JOIN products as p on p.id = t.product_id JOIN address as a ON a.id = t.address WHERE trxId = ? "
             
             db.query(qs, id, (err, data) => {
                 if(!err) {

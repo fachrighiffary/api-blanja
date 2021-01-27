@@ -45,4 +45,22 @@ module.exports = {
             form.error(res,err)
          })
     },
+    getDetailTransaction : (req, res) => {
+        transactionModel
+        .getDetailTransaction(req)
+        .then((data) => {
+            if (data.length) {
+                res.json({
+                  data,
+                });
+              } else {
+                res.status(404).json({
+                  msg: "Data not Found",
+                });
+              }
+        })
+        .catch((err) => {
+            form.error(res,err)
+         })
+    },
 }
