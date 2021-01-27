@@ -4,22 +4,27 @@ const transactionModel = require("../models/transaction")
 module.exports = {
     postTransaction : (req,res) => {
         const {body} = req;
-        const insertBody = {
-            ...body,
-            transaction_date: new Date(Date.now())
-        };
-    
         transactionModel
-        .postTransaction(insertBody)
+        .postTransaction(body)
         .then((data) => {
             const resObject= {
                 msg: 'insert Success',
-                data : {id : data.insertId, ...insertBody}
+                data : {id : data.insertId, ...body}
             };
             res.json(resObject)
         })
         .catch((err) => {
             res.json(err)
+        })
+    },
+    postMultiple : (req, res) => {
+        const {body} = req
+        transactionModel
+        .postMultiple(body)
+        .then((result) => {
+            res.status(200).json(result)
+        }).catch((error) => {
+            res.status(error.status).json(error)
         })
     },
     getTransaction : (req, res) => {

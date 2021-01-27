@@ -3,7 +3,7 @@ const db = require("../configs/mySQL");
 module.exports = {
     postTransaction : (insertBody) => {
         return new Promise((resolve, reject) => {
-            const qs = "INSERT INTO transactions SET ?";
+            const qs = "INSERT INTO tb_transaksi SET ?";
             db.query(qs, insertBody, (err, data) => {
                 if(!err){
                     resolve(data)
@@ -11,6 +11,40 @@ module.exports = {
                     reject(err)
                 }
             })
+        })
+    },
+    postMultiple: (body) => {
+        return new Promise((resolve, reject) => {
+            let status = 200;
+            let errData = null
+            body.map((items) => {
+                console.log(items)
+                const qs = `INSERT INTO tb_item_order SET ?`
+                db.query(qs, items, (err, data) => {
+
+                    if (!err) {
+                        if (status != 500) {
+                            status = 200
+                            console.log('berhasil')
+                        }
+                    } else {
+                        status = 500
+                        errData = err
+                        console.log('gagal')
+                    }
+                })
+            })
+            if (status == 200) {
+                resolve({
+                    status: 200,
+                    message: `Berhasil insert data`
+                })
+            } else {
+                reject({
+                    status: 500,
+                    message: errData
+                })
+            }
         })
     },
     getTransaction : (req) => {
