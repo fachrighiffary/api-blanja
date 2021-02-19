@@ -1,4 +1,4 @@
-const mySQL = require('mySQL');
+const mysql = require('mysql');
 const {HOST, DB, USER, PASS} = process.env;
 
 // console.log(HOST)
@@ -6,7 +6,7 @@ const {HOST, DB, USER, PASS} = process.env;
 // console.log(USER)
 // console.log(PASS)
 
-const db = mySQL.createConnection({
+const db = mysql.createConnection({
     host: HOST,
     user: USER,
     password: PASS,
