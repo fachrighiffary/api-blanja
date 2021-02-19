@@ -3,8 +3,8 @@ const {HOST, DB, USER, PASS, DB_USER, DB_PASS} = process.env;
 
 const db = mysql.createConnection({
     host: HOST,
-    user: DB_USER,
-    password: DB_PASS,
+    user: USER,
+    password: PASS,
     database: DB
 })
 
