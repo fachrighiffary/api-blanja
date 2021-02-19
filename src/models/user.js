@@ -20,6 +20,24 @@ module.exports = {
     },
     updateUser : () => {
        
+    },
+    getNameUser: (id) => {
+        return new Promise((resolve, reject) => {
+            const qs = `SELECT username from users where id = ?`
+            db.query(qs, id, (err, data) => {
+                if(!err){
+                    resolve({
+                        status: 200,
+                        data: data[0]
+                    })
+                }else{
+                    reject({
+                        status: 500,
+                        data: err
+                    })
+                }
+            })
+        })
     }
 
 }

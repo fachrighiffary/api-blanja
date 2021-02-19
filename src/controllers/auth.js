@@ -5,8 +5,7 @@ const form = require("../helpers/form");
 module.exports = {
     register : (req, res) => {
         const {body} = req;
-        authModel
-        .postNewUser(body)
+        authModel.postNewUser(body)
         .then(() => {
             form.success(res, {
                 msg: "Register Berhasil",
@@ -19,7 +18,34 @@ module.exports = {
             form.error(res,err)
         });
     },
-    
+    activate: (req, res) => {
+        const {email, otp} = req.params
+        console.log(email, otp)
+        authModel.activate(email, otp)
+        .then((result) =>{
+            res.status(200).json(result)
+        }).catch((error) => {
+            res.status(error.status).json(error)
+        })
+    },    
+    resend: (req, res) => {
+        const {email} = req.body
+        authModel.resend(email)
+        .then((result) =>{
+            res.status(200).json(result)
+        }).catch((error) =>{
+            res.status(error.status).json(error)
+        })
+    },
+    forgot: (req, res) => {
+        const {email} = req.body
+        authModel.postForget(email)
+        .then((result) =>{
+            res.status(200).json(result)
+        }).catch((error) =>{
+            res.status(error.status).json(error)
+        })
+    },
     login : (req, res) => {
         const {body} = req
         authModel
@@ -29,6 +55,34 @@ module.exports = {
         })
         .catch((err) => {
             form.error(res,err)
+        })
+    },
+    otp: (req, res) => {
+        const {email, otp} = req.params
+        authModel.getOtp(email, otp)
+        .then((result) =>{
+            res.status(200).json(result)
+        }).catch((error) => {
+            res.status(error.status).json(error)
+        })
+    },
+    reset: (req,res) => {
+        const {email, newPassword} = req.body
+        console.log(req.body)
+        authModel.resetPassword(email, newPassword)
+        .then((result) =>{
+            res.status(200).json(result)
+        }).catch((error) =>{
+            res.status(500).json(error)
+        })
+    },
+    changePassword: (req, res) => {
+        const {body} = req
+        authModel.userChangePassword(body)
+        .then((result) => {
+            res.status(result.status).json(result)
+        }).catch((error) => {
+            res.status(error.status).json(error)
         })
     },
     logout : (req, res) => {

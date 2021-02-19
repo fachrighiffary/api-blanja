@@ -50,7 +50,7 @@ module.exports = {
     getTransaction : (req) => {
         const {id} = req.params;
         return new Promise((resolve, reject) => {
-            const qs = "SELECT * FROM tb_transaksi WHERE user_id = ?"
+            const qs = "SELECT * FROM tb_transaksi WHERE user_id = ? ORDER BY `tb_transaksi`.`id` DESC"
             
             db.query(qs, id, (err, data) => {
                 if(!err) {
@@ -76,4 +76,29 @@ module.exports = {
             });
         });
     },
+    getAlltransaction : () => {
+        return new Promise((resolve, reject) => {
+            const qs = `SELECT * FROM tb_transaksi  ORDER BY tb_transaksi.id DESC`
+            db.query(qs, (err, data) => {
+                if(!err){
+                    resolve(data)
+                }else{
+                    reject(err)
+                }
+            })
+        })
+    },
+    updateTransaction : (updateBody,id) => {
+        return new Promise((resolve, reject) => {
+            const qs = `UPDATE tb_transaksi SET ? WHERE id = ?`
+            db.query(qs, [updateBody, id], (err, data) => {
+                if(!err){
+                    resolve(data)
+                }else{
+                    reject(err)
+                }
+            })
+        })
+    }
+
 }
