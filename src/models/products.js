@@ -71,7 +71,6 @@ module.exports = {
             });
         });
     },
-
     createProducts : (insertBody) => {
         return new Promise((resolve, reject) => {
             const  qs = "INSERT INTO products SET ?";

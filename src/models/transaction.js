@@ -50,7 +50,7 @@ module.exports = {
     getTransaction : (req) => {
         const {id} = req.params;
         return new Promise((resolve, reject) => {
-            const qs = "SELECT * FROM tb_transaksi WHERE user_id = ? ORDER BY `tb_transaksi`.`id` DESC"
+            const qs = "SELECT * FROM tb_transaksi WHERE user_id = ? ORDER BY id DESC"
             
             db.query(qs, id, (err, data) => {
                 if(!err) {
@@ -78,7 +78,7 @@ module.exports = {
     },
     getAlltransaction : () => {
         return new Promise((resolve, reject) => {
-            const qs = `SELECT * FROM tb_transaksi  ORDER BY tb_transaksi.id DESC`
+            const qs = `SELECT * FROM tb_transaksi  ORDER BY id DESC`
             db.query(qs, (err, data) => {
                 if(!err){
                     resolve(data)
