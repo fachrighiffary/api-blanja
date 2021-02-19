@@ -60,7 +60,7 @@ module.exports = {
                     pageinfo : {
                         currentPage : page,
                         previus     :  page === 1? null : `/products?page=${page- 1}&limit=${limit}`,
-                        nextPage    : (page === limit) !==  data[0].length ? null : `/products?page=${page + 1}&limit=${limit}`,
+                        nextPage    : limit !== data.length ? null : `/products?page=${page+ 1}&limit=${limit}`,
                     }
                 }
                 if(!err){
@@ -71,6 +71,7 @@ module.exports = {
             });
         });
     },
+
     createProducts : (insertBody) => {
         return new Promise((resolve, reject) => {
             const  qs = "INSERT INTO products SET ?";
