@@ -19,8 +19,7 @@ module.exports = {
     },
     postMultiple : (req, res) => {
         const {body} = req
-        transactionModel
-        .postMultiple(body)
+        transactionModel.postMultiple(body)
         .then((result) => {
             res.status(200).json(result)
         }).catch((error) => {
