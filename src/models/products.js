@@ -57,11 +57,6 @@ module.exports = {
             db.query(qs,[limit, offset], (err, data) => {
                 const newResult = {
                     products: data,
-                    // pageinfo : {
-                    //     currentPage : page,
-                    //     previus     :  page === 1? null : `/products?page=${page- 1}&limit=${limit}`,
-                    //     nextPage    : limit !== data.length ? null : `/products?page=${page+ 1}&limit=${limit}`,
-                    // }
                 }
                 if(!err){
                     resolve(newResult);
