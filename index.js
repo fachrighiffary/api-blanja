@@ -4,7 +4,7 @@ const logger = require("morgan");
 const cors = require("cors");
 const mainRouter = require("./src/routes/index")
 const app = express()
-const port = 8002; 
+const port = 8080; 
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
